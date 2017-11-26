@@ -52,14 +52,20 @@
 			<Add directory="C:/Users/Youngjoon/Desktop/New Order/SFML-2.4.2/lib" />
 		</Linker>
 		<Unit filename="include/Entity.h" />
+		<Unit filename="include/Functions.h" />
+		<Unit filename="include/Levels.h" />
 		<Unit filename="include/Map.h" />
+		<Unit filename="include/Monster.h" />
 		<Unit filename="include/Player.h" />
+		<Unit filename="include/Projectile.h" />
 		<Unit filename="include/Tile.h" />
 		<Unit filename="include/structs.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Entity.cpp" />
 		<Unit filename="src/Map.cpp" />
+		<Unit filename="src/Monster.cpp" />
 		<Unit filename="src/Player.cpp" />
+		<Unit filename="src/Projectile.cpp" />
 		<Unit filename="src/Tile.cpp" />
 		<Extensions>
 			<code_completion />

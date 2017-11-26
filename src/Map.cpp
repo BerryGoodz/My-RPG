@@ -9,14 +9,11 @@ Map::~Map()
 {
     //dtor
 }
-int wallNumber = 0;
-int portalNumber = 0;
 
-bool Map::load(const std::string& tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height)
+bool Map::load(const std::string& tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height, Player& player, Monster& m, std::vector<Monster>& ma)
 {
     if(!m_tileset.loadFromFile(tileset))
         return false;
-
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize(width * height * 4);
 
@@ -40,34 +37,56 @@ bool Map::load(const std::string& tileset, sf::Vector2u tileSize, const int* til
             quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
             quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
             quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
-
+            if(tileNumber == -1)
+            {
+                m.setPosition(i * tileSize.x , j * tileSize.y);
+                ma.push_back(m);
+            }
             if(tileNumber == 2)
             {
-                wallX[wallNumber] = i * tileSize.x;
-                wallY[wallNumber] = j * tileSize.y;
+                wallX.push_back(i * tileSize.x);
+                wallY.push_back(j * tileSize.y);
                 wallNumber++;
             }
-            if(tileNumber == 3)
+            if(tileNumber == 48)
             {
-                portalX[portalNumber] = i * tileSize.x;
-                portalY[portalNumber] = j * tileSize.y;
+                if(prevMap){player.locate(sf::Vector2f(i * tileSize.x - 50, j * tileSize.y - 50)); prevMap = false;}
+                portalX.push_back(i * tileSize.x);
+                portalY.push_back(j * tileSize.y);
                 portalNumber++;
+            }
+            if(tileNumber == 49)
+            {
+                if(nextMap){player.locate(sf::Vector2f(i * tileSize.x - 50, j * tileSize.y - 50)); nextMap = false;}
+                prevPortalX.push_back(i * tileSize.x);
+                prevPortalY.push_back(j * tileSize.y);
+                prevPortalNumber++;
             }
         }
     }
         return true;
-
 }
-void Map::resetMap()
+
+void Map::resetMap(std::vector<Monster>& ma)
 {
     m_vertices.clear();
+    wallX.clear();
+    wallY.clear();
+    portalX.clear();
+    portalY.clear();
+    prevPortalX.clear();
+    prevPortalY.clear();
+    ma.clear();
+}
+bool Map::isEmpty()
+{
+    return wallX.empty();
 }
 void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
     states.texture = &m_tileset;
     target.draw(m_vertices,states);
-
 }
 void Map::isCollide(Player& p, const entityNames& n)
 {
@@ -75,42 +94,83 @@ float distToLeft;
 float distToRight;
 float distToTop;
 float distToBottom;
-nextMap = false;
+
+
     if(n.name == "wall")
     {
-    for(int i = 0; i < 50; i ++)
+    for(int i = 0; i < wallX.size(); i ++)
     {
-    distToLeft = (p.getPositionX()+30) - wallX[i];
-    distToRight = (wallX[i]+50) - (p.getPositionX()+30);
-    distToTop = (p.getPositionY()+48) - wallY[i];
-    distToBottom = (wallY[i]+ 50) - (p.getPositionY()+48);
+    distToLeft = (p.getPositionX()+40) - wallX[i];
+    distToRight = (wallX[i]+55) - (p.getPositionX()+30);
+    distToTop = (p.getPositionY()+58) - wallY[i];
+    distToBottom = (wallY[i]+ 60) - (p.getPositionY()+48);
     if ( distToLeft > 0 && distToRight > 0 && distToTop > 0 && distToBottom > 0 )
     {
-        if(distToLeft > distToRight && distToLeft > distToTop && distToLeft > distToBottom){p.wallCollide(1);}
+
+        if(distToLeft > distToRight && distToLeft > distToTop && distToLeft > distToBottom){p.wallCollide(1);}//get rid of these long if statements, define them somewhere else
         else if(distToRight > distToLeft && distToRight > distToTop && distToRight > distToBottom){p.wallCollide(2);}
         else if(distToTop > distToLeft && distToTop > distToRight && distToTop > distToBottom){p.wallCollide(3);}
         else if(distToBottom > distToLeft && distToBottom > distToTop && distToBottom > distToRight){p.wallCollide(4);}
-
     }
     }
     }
-
     if(n.name == "portal")
     {
-     for(int i = 0; i < 10; i ++)
+     for(int i = 0; i < portalX.size(); i ++)
     {
+
     distToLeft = (p.getPositionX()+30) - portalX[i];
     distToRight = (portalX[i]+50) - (p.getPositionX()+30);
     distToTop = (p.getPositionY()+48) - portalY[i];
     distToBottom = (portalY[i]+ 50) - (p.getPositionY()+48);
+
      if ( distToLeft > 0 && distToRight > 0 && distToTop > 0 && distToBottom > 0 )
     {
         nextMap = true;
     }
     }
     }
+    if(n.name == "prevportal")
+    {
+     for(int i = 0; i < prevPortalX.size(); i ++)
+    {
+    distToLeft = (p.getPositionX()+30) - prevPortalX[i];
+    distToRight = (prevPortalX[i]+50) - (p.getPositionX()+30);
+    distToTop = (p.getPositionY()+48) - prevPortalY[i];
+    distToBottom = (prevPortalY[i]+ 50) - (p.getPositionY()+48);
+
+     if ( distToLeft > 0 && distToRight > 0 && distToTop > 0 && distToBottom > 0 )
+    {
+        prevMap = true;
+    }
+    }
+    }
 }
+void Map::monsterCollide(Monster& m)
+{
+    for(int i = 0; i < wallX.size(); i ++)
+    {
+    float distToLeft = (m.getPositionX()+40) - wallX[i];
+    float distToRight = (wallX[i]+55) - (m.getPositionX()+10);
+    float distToTop = (m.getPositionY()+38) - wallY[i];
+    float distToBottom = (wallY[i]+ 70) - (m.getPositionY()+48);
+    if ( distToLeft > 0 && distToRight > 0 && distToTop > 0 && distToBottom > 0 )
+    {
+        if(distToLeft > distToRight && distToLeft > distToTop && distToLeft > distToBottom){m.wallCollide(1);}
+        else if(distToRight > distToLeft && distToRight > distToTop && distToRight > distToBottom){m.wallCollide(2);}
+        else if(distToTop > distToLeft && distToTop > distToRight && distToTop > distToBottom){m.wallCollide(3);}
+        else if(distToBottom > distToLeft && distToBottom > distToTop && distToBottom > distToRight){m.wallCollide(4);}
+    }
+    }
+}
+
+
 bool Map::onPortal()
 {
     return nextMap;
 }
+bool Map::onPrevPortal()
+{
+    return prevMap;
+}
+

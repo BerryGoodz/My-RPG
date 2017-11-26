@@ -1,15 +1,18 @@
 #include <Player.h>
 #include <Map.h>
+#include <Levels.h>
+#include <Projectile.h>
+#include <Functions.h>
 const int W = 1000;
 const int H = 700;
 
 /* Notes
 
-easy: character facing properly, add texture, proper map
+easy: damage, drops, healthbar, start screen
 
-difficult: monsters in vertexarray, so that the numbers on the map indicates where the monster spawns
+difficult: character attack
 
-
+what I did last time: fixed monster random movement
 
                                                 */
 
@@ -19,50 +22,18 @@ int main()
     srand(time(NULL));
     RenderWindow window(VideoMode(W, H), "Game");
 
+    Player player(image("pokemontrainer.png"), setRect(0,0,256/4, 256/4), position(W/2,H/2));
+    player.locate(sf::Vector2f(540,240));// initial position (position is not set in the first map by the load function)
+    Map map, bgmap;
+    Monster m(image("slime.png"), setRect(0, 0, 50, 50), position(50,50));
+    std::vector<Monster> monsterArray;
+    Projectile sword(image("sword.png"), setRect(0, 0, 32, 32), position(0,0));
+    std::vector<Projectile> projectileArray;
 
-    const int level[] =
-    {
-        0, 0, 0, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-        0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-        1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-        0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1,
-        0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 0, 0, 0, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-    };
-    const int level2[] =
-    {
-        1, 0, 0, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-        0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-        1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-        0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1,
-        0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 0, 0, 0, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-    };
-
-
-    Player player(image("pokemontrainer.png"), setRect(0*256/4,0,256/4, 256/4), position(W/2,H/2));
-
-    Map map;
-    if (!map.load("tiles.png", sf::Vector2u(50, 50), level, 20, 14))
+    if (!map.load("tile2.png", sf::Vector2u(50, 50), level1, 20, 14, player, m, monsterArray))
         return -1;
-
-    player.randomPosition();
+    if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel1, 20, 14, player, m, monsterArray))
+        return -1;
 
     window.setFramerateLimit(60);
     while (window.isOpen())
@@ -74,25 +45,93 @@ int main()
                 window.close();
         }
         player.frameRun();
+        for(auto it = monsterArray.begin(); it < monsterArray.end(); it++)
+        {
+        it -> frameRun();
+        }
+        for(auto it = projectileArray.begin(); it < projectileArray.end(); it++)
+        {
+        it -> frameRun();
+        if(it->getLifeTime()<1)
+        {
+            projectileArray.erase(it);
+        }
+        }
+        int counter = 0;
+        int counter2 = 0;
+        for(auto it = monsterArray.begin(); it < monsterArray.end(); it++)
+        {
+        for(auto it2 = projectileArray.begin(); it2 < projectileArray.end(); it2++)
+        {
+
+            if(isCollide(*it2, *it))
+               {
+                    monsterArray.erase(it);
+               }
+            counter++;
+        }
+        counter2++;
+        }
+        if(Keyboard::isKeyPressed(Keyboard::Space))
+        {
+            player.attack(projectileArray, sword);
+        }
 
         if(Keyboard::isKeyPressed(Keyboard::Q))
         {
             //add delays using mouse event members
-            std::cout<<player.getPositionY()<<std::endl;
+            std::cout<<"X: "<<player.getPositionX()<<std::endl;
+            std::cout<<"Y: "<<player.getPositionY()<<std::endl;
         }
-
+        //////////Collision//////////
         map.isCollide(player, entityNames("wall"));
         map.isCollide(player, entityNames("portal"));
+        map.isCollide(player, entityNames("prevportal"));
+        for(auto it = monsterArray.begin(); it < monsterArray.end(); it++)
+        {
+        map.monsterCollide(*it);
+        }
+        //////////Collision//////////
+        //////////Portals//////////
         if(map.onPortal())
         {
-            map.resetMap();
-            if (!map.load("tiles.png", sf::Vector2u(50, 50), level2, 20, 14))
+            map.resetMap(monsterArray);
+            if(map.isEmpty())
+            {
+            if (!map.load("tile2.png", sf::Vector2u(50, 50), level2, 20, 14, player, m, monsterArray))
             return -1;
+            if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel2, 20, 14, player, m, monsterArray))
+            return -1;
+            }
         }
+        if(map.onPrevPortal())
+        {
+            map.resetMap(monsterArray);
+            if(map.isEmpty())
+            {
+            if (!map.load("tile2.png", sf::Vector2u(50, 50), level1, 20, 14, player, m, monsterArray))
+            return -1;
+            if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel1, 20, 14, player, m, monsterArray))
+            return -1;
+            }
+        }
+        //////////Portals//////////
         window.clear();
 
         window.draw(map);
+        window.draw(bgmap);
+        for(auto it = monsterArray.begin(); it < monsterArray.end(); it++)
+        {
+        window.draw(it->getSprite());
+        window.draw(it->getRect());
+        }
         window.draw(player.getSprite());
+        for(auto it = projectileArray.begin(); it < projectileArray.end(); it++)
+        {
+        window.draw(it->getSprite());
+        window.draw(it->getRect());
+        }
+
 
         window.display();
     }
