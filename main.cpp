@@ -10,7 +10,8 @@ const int H = 700;
 
 easy: damage, drops, healthbar, start screen
 
-difficult: character attack
+difficult: character attack, reduce classes(remove classes and leave Entity only,
+put all functions together and identify the entity using string "name" and call functions differently according to the name.
 
 what I did last time: fixed monster random movement
 
@@ -57,8 +58,6 @@ int main()
             projectileArray.erase(it);
         }
         }
-        int counter = 0;
-        int counter2 = 0;
         for(auto it = monsterArray.begin(); it < monsterArray.end(); it++)
         {
         for(auto it2 = projectileArray.begin(); it2 < projectileArray.end(); it2++)
@@ -68,9 +67,7 @@ int main()
                {
                     monsterArray.erase(it);
                }
-            counter++;
         }
-        counter2++;
         }
         if(Keyboard::isKeyPressed(Keyboard::Space))
         {
