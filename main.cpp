@@ -1,8 +1,5 @@
-#include <Player.h>//
 #include <Map.h>
-#include <Levels.h>//
-#include <Projectile.h>//
-#include <Functions.h>//put all these includes into map.h
+
 const int W = 1000;
 const int H = 700;
 
