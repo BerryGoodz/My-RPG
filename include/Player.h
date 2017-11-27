@@ -29,10 +29,8 @@ class Player: public Entity
         int dir = 0;
         int imgSizeX;
         int imgSizeY;
-        int i = 0;
-        int tick = 0;
         float speed = 0.7;
-        int cooldown = 20;
+        int cooldown = 20; int tick = 0;
 
 };
 
