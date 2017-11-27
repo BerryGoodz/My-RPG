@@ -1,8 +1,8 @@
-#include <Player.h>
+#include <Player.h>//
 #include <Map.h>
-#include <Levels.h>
-#include <Projectile.h>
-#include <Functions.h>
+#include <Levels.h>//
+#include <Projectile.h>//
+#include <Functions.h>//put all these includes into map.h
 const int W = 1000;
 const int H = 700;
 
@@ -10,8 +10,7 @@ const int H = 700;
 
 easy: damage, drops, healthbar, start screen
 
-difficult: character attack, reduce classes(remove classes and leave Entity only,
-put all functions together and identify the entity using string "name" and call functions differently according to the name.
+difficult: character attack, dont remove classes, remove includes
 
 what I did last time: fixed monster random movement
 
@@ -22,20 +21,19 @@ int main()
 {
     srand(time(NULL));
     RenderWindow window(VideoMode(W, H), "Game");
-
+    //////////Initialization//////////
     Player player(image("pokemontrainer.png"), setRect(0,0,256/4, 256/4), position(W/2,H/2));
     player.locate(sf::Vector2f(540,240));// initial position (position is not set in the first map by the load function)
-    Map map, bgmap;
     Monster m(image("slime.png"), setRect(0, 0, 50, 50), position(50,50));
     std::vector<Monster> monsterArray;
     Projectile sword(image("sword.png"), setRect(0, 0, 32, 32), position(0,0));
     std::vector<Projectile> projectileArray;
-
+    Map map, bgmap;
     if (!map.load("tile2.png", sf::Vector2u(50, 50), level1, 20, 14, player, m, monsterArray))
         return -1;
     if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel1, 20, 14, player, m, monsterArray))
         return -1;
-
+    //////////Initialization//////////
     window.setFramerateLimit(60);
     while (window.isOpen())
     {
@@ -45,6 +43,7 @@ int main()
             if (event.type == Event::Closed)
                 window.close();
         }
+        //////////Frameruns//////////
         player.frameRun();
         for(auto it = monsterArray.begin(); it < monsterArray.end(); it++)
         {
@@ -58,6 +57,30 @@ int main()
             projectileArray.erase(it);
         }
         }
+        //////////Frameruns//////////
+        //////////Buttons//////////
+        if(Keyboard::isKeyPressed(Keyboard::Space))
+        {
+            player.attack(projectileArray, sword);
+        }
+        if(event.type == sf::Event::KeyReleased)
+        {
+            if(event.key.code == sf::Keyboard::Q)
+            {
+            //add delays using mouse event members
+            std::cout<<"X: "<<player.getPositionX()<<std::endl;
+            std::cout<<"Y: "<<player.getPositionY()<<std::endl;
+            }
+        }
+        //////////Buttons//////////
+        //////////Collision//////////
+        map.isCollide(player, entityNames("wall"));
+        map.isCollide(player, entityNames("portal"));
+        map.isCollide(player, entityNames("prevportal"));
+        for(auto it = monsterArray.begin(); it < monsterArray.end(); it++)
+        {
+        map.monsterCollide(*it);
+        }
         for(auto it = monsterArray.begin(); it < monsterArray.end(); it++)
         {
         for(auto it2 = projectileArray.begin(); it2 < projectileArray.end(); it2++)
@@ -68,25 +91,6 @@ int main()
                     monsterArray.erase(it);
                }
         }
-        }
-        if(Keyboard::isKeyPressed(Keyboard::Space))
-        {
-            player.attack(projectileArray, sword);
-        }
-
-        if(Keyboard::isKeyPressed(Keyboard::Q))
-        {
-            //add delays using mouse event members
-            std::cout<<"X: "<<player.getPositionX()<<std::endl;
-            std::cout<<"Y: "<<player.getPositionY()<<std::endl;
-        }
-        //////////Collision//////////
-        map.isCollide(player, entityNames("wall"));
-        map.isCollide(player, entityNames("portal"));
-        map.isCollide(player, entityNames("prevportal"));
-        for(auto it = monsterArray.begin(); it < monsterArray.end(); it++)
-        {
-        map.monsterCollide(*it);
         }
         //////////Collision//////////
         //////////Portals//////////
@@ -117,12 +121,15 @@ int main()
 
         window.draw(map);
         window.draw(bgmap);
+      
         for(auto it = monsterArray.begin(); it < monsterArray.end(); it++)
         {
         window.draw(it->getSprite());
         window.draw(it->getRect());
         }
+      
         window.draw(player.getSprite());
+      
         for(auto it = projectileArray.begin(); it < projectileArray.end(); it++)
         {
         window.draw(it->getSprite());
