@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <time.h>
 #include <iostream>
+#include <Functions.h>
+#include <Projectile.h>
 
 using namespace sf;
 
