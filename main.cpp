@@ -21,7 +21,7 @@ int main()
 {
     srand(time(NULL));
     RenderWindow window(VideoMode(W, H), "Game");
-    //////////Initialization//////////
+    //////////Initialization(begin)//////////
     Player player(image("pokemontrainer.png"), setRect(0,0,256/4, 256/4), position(W/2,H/2));
     player.locate(sf::Vector2f(540,240));// initial position (position is not set in the first map by the load function)
     Monster m(image("slime.png"), setRect(0, 0, 50, 50), position(50,50));
@@ -33,7 +33,7 @@ int main()
         return -1;
     if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel1, 20, 14, player, m, monsterArray))
         return -1;
-    //////////Initialization//////////
+    //////////Initialization(end)//////////
     window.setFramerateLimit(60);
     while (window.isOpen())
     {
@@ -43,7 +43,7 @@ int main()
             if (event.type == Event::Closed)
                 window.close();
         }
-        //////////Frameruns//////////
+        //////////Frameruns(begin)//////////
         player.frameRun();
         for(auto it = monsterArray.begin(); it < monsterArray.end(); it++)
         {
@@ -57,8 +57,8 @@ int main()
             projectileArray.erase(it);
         }
         }
-        //////////Frameruns//////////
-        //////////Buttons//////////
+        //////////Frameruns(end)//////////
+        //////////Buttons(begin)//////////
         if(Keyboard::isKeyPressed(Keyboard::Space))
         {
             player.attack(projectileArray, sword);
@@ -72,8 +72,8 @@ int main()
             std::cout<<"Y: "<<player.getPositionY()<<std::endl;
             }
         }
-        //////////Buttons//////////
-        //////////Collision//////////
+        //////////Buttons(end)//////////
+        //////////Collision(begin)//////////
         map.isCollide(player, entityNames("wall"));
         map.isCollide(player, entityNames("portal"));
         map.isCollide(player, entityNames("prevportal"));
@@ -92,8 +92,8 @@ int main()
                }
         }
         }
-        //////////Collision//////////
-        //////////Portals//////////
+        //////////Collision(end)//////////
+        //////////Portals(begin)//////////
         if(map.onPortal())
         {
             map.resetMap(monsterArray);
@@ -116,7 +116,7 @@ int main()
             return -1;
             }
         }
-        //////////Portals//////////
+        //////////Portals(end)//////////
         window.clear();
 
         window.draw(map);
