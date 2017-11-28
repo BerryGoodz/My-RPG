@@ -26,14 +26,18 @@ int main()
     Projectile sword(image("sword.png"), setRect(0, 0, 32, 32), position(0,0));
     std::vector<Projectile> projectileArray;
     Map map, bgmap;
-    if (!map.load("tile2.png", sf::Vector2u(50, 50), level1, 20, 14, player, m, monsterArray))
+    /*if (!map.load("tile2.png", sf::Vector2u(50, 50), level1, 20, 14, player, m, monsterArray))
         return -1;
     if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel1, 20, 14, player, m, monsterArray))
-        return -1;
+        return -1;*/
+    Sprite titleScreen;
+    //titleScreen.loadFromFile...
+   
     Font font;
     //font.loadFromFile...
     Text damage("0", font, 20);
     std::vector<Text> textArray;
+    int mapNumber = 0;
     //////////Initialization(end)//////////
     window.setFramerateLimit(60);
     while (window.isOpen())
@@ -73,6 +77,15 @@ int main()
             std::cout<<"Y: "<<player.getPositionY()<<std::endl;
             }
         }
+        if (event.type == sf::Event::MouseButtonReleased && mapNumber == 0)
+        {
+            if (event.mouseButton.button == sf::Mouse::Right)
+            {
+        std::cout << "the right button was pressed" << std::endl;
+        std::cout << "mouse x: " << event.mouseButton.x << std::endl;
+        std::cout << "mouse y: " << event.mouseButton.y << std::endl;
+            }
+        }
         //////////Buttons(end)//////////
         //////////Collision(begin)//////////
         map.isCollide(player, entityNames("wall"));
@@ -104,6 +117,7 @@ int main()
             return -1;
             if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel2, 20, 14, player, m, monsterArray))
             return -1;
+              mapNumber++;
             }
         }
         if(map.onPrevPortal())
@@ -115,7 +129,9 @@ int main()
             return -1;
             if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel1, 20, 14, player, m, monsterArray))
             return -1;
+              mapNumber--;
             }
+            
         }
         //////////Portals(end)//////////
         window.clear();
@@ -136,7 +152,7 @@ int main()
         window.draw(it->getSprite());
         window.draw(it->getRect());
         }
-
+        window.draw(titleScreen);
 
         window.display();
     }
