@@ -10,6 +10,9 @@ easy: damage, drops, healthbar, start screen
 difficult: inventory idea: use vector, make item class deriving from entity. make array of inventory slots and make the mouse position
 identify them. If the mouse was holding the item and released in a slot, the item position is set according to the slot.
 
+Inventory screen, stat screen, and all other screens should not be all initialized in the main function, but make a class for it and use 
+vector in main function.
+
 what I did last time: fixed monster random movement
 
                                                 */
