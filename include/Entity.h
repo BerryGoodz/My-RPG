@@ -17,9 +17,19 @@ class Entity
         Entity();
         virtual ~Entity();
         virtual Sprite getSprite()=0;
+        
+        
     protected:
-
+    
+    getHp();
+    getRect();
     private:
+    RectangleShape rect;
+    int strength;
+    int defense;
+    float speed;
+    int hp;
+    
 
 };
 
