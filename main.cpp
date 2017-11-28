@@ -7,7 +7,8 @@ const int H = 700;
 
 easy: damage, drops, healthbar, start screen
 
-difficult: character attack, dont remove classes, remove includes
+difficult: inventory idea: use vector, make item class deriving from entity. make array of inventory slots and make the mouse position
+identify them. If the mouse was holding the item and released in a slot, the item position is set according to the slot.
 
 what I did last time: fixed monster random movement
 
