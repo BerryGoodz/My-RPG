@@ -11,4 +11,9 @@ bool isCollide(Projectile p, Monster m)
     }
     return false;
 }
+bool isMouseOn(float x, float y, float buttonSize)
+{
+    
+    
+}    
 #endif // FUNCTIONS_H
