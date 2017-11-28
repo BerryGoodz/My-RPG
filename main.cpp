@@ -30,6 +30,10 @@ int main()
         return -1;
     if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel1, 20, 14, player, m, monsterArray))
         return -1;
+    Font font;
+    //font.loadFromFile...
+    Text damage("0", font, 20);
+    std::vector<Text> textArray;
     //////////Initialization(end)//////////
     window.setFramerateLimit(60);
     while (window.isOpen())
