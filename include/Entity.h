@@ -6,7 +6,12 @@
 #include <cstdlib>
 #include <time.h>
 #include <iostream>
+
 #include <sstream>
+
+
+
+
 
 using namespace sf;
 
@@ -16,9 +21,15 @@ class Entity
         Entity();
         virtual ~Entity();
         virtual Sprite getSprite()=0;
-    protected:
+
+
+
+
 
     private:
+
+
+
 
 };
 

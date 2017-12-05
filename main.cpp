@@ -1,17 +1,10 @@
 #include <Map.h>
 #include <Functions.h>
+
 const int W = 1000;
 const int H = 700;
 
-/* Notes
 
-easy: drops, healthbar, start screen, stat screen
-
-difficult:  inventory, camera
-
-what I did last time: expbar, added bunch of classes to implement later
-
-                                                */
 
 using namespace sf;
 int main()
@@ -19,15 +12,18 @@ int main()
     srand(time(NULL));
     RenderWindow window(VideoMode(W, H), "Game");
 
+
     //////////Initialization(begin)//////////
 
-    Player player(image("pokemontrainer.png"), setRect(0, 0, 256 / 4, 256 / 4), position(W / 2, H / 2));
-    player.locate(sf::Vector2f(540, 240)); // initial position (position is not set in the first map by the load function)
-    Monster m(image("slime.png"), setRect(0, 0, 50, 50), position(50, 50));
+    Player player(image("pokemontrainer.png"), setRect(0,0,256/4, 256/4), position(W/2,H/2));
+    player.locate(sf::Vector2f(540,240));// initial position (position is not set in the first map by the load function)
+    Monster m(image("slime.png"), setRect(0, 0, 50, 50), position(50,50));
+
     std::vector<Monster> monsterArray;
     Projectile sword(image("sword.png"), setRect(0, 0, 32, 32), position(0, 0));
     std::vector<Projectile> projectileArray;
     Map map, bgmap;
+
     if (!map.load("tile2.png", sf::Vector2u(50, 50), level1, 20, 14, player, m, monsterArray))
         return -1;
     if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel1, 20, 14, player, m, monsterArray))
@@ -51,8 +47,11 @@ int main()
                 window.close();
         }
 
-        //////////Frameruns(begin)//////////
+
+    //////////Frameruns(begin)//////////
+
         timer.frameRun();
+
         player.frameRun();
         for (auto it = monsterArray.begin(); it < monsterArray.end(); it++) {
             it->frameRun();
@@ -62,6 +61,7 @@ int main()
                 interface.addExperience(1);
             }
         }
+
         for (auto it = projectileArray.begin(); it < projectileArray.end(); it++) {
             it->frameRun();
             if (it->getLifeTime() < 1) {
@@ -76,9 +76,6 @@ int main()
         }
         interface.frameRun();
         map.monsterRespawn(m , monsterArray);
-
-
-
 
         //////////Frameruns(end)//////////
 
@@ -121,13 +118,15 @@ int main()
 
         //////////Portals(begin)//////////
 
-        if (map.onPortal()) {
+        if(map.onPortal())
+        {
             map.resetMap(monsterArray);
-            if (map.isEmpty()) {
-                if (!map.load("tile2.png", sf::Vector2u(50, 50), level2, 20, 14, player, m, monsterArray))
-                    return -1;
-                if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel2, 20, 14, player, m, monsterArray))
-                    return -1;
+            if(map.isEmpty())
+            {
+            if (!map.load("tile2.png", sf::Vector2u(50, 50), level2, 20, 14, player, m, monsterArray))
+            return -1;
+            if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel2, 20, 14, player, m, monsterArray))
+            return -1;
             }
         }
         if (map.onPrevPortal()) {
@@ -146,6 +145,7 @@ int main()
 
         window.draw(map);
         window.draw(bgmap);
+
 
         for (auto it = monsterArray.begin(); it < monsterArray.end(); it++) {
             window.draw(it->getSprite());

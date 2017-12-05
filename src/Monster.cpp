@@ -15,8 +15,6 @@ Monster::Monster(const image& img, const setRect& sr, const position& p)
     imgSizeY = sr.rectY;
 
     rect.setSize(Vector2f(imgSizeX/2,imgSizeY/2));
-
-
 }
 
 Monster::~Monster()

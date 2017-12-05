@@ -430,7 +430,7 @@
 	"Monster.h"
 	"Player.h"
 
-1511928372 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\entity.h
+1512442896 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\entity.h
 	<SFML/Graphics.hpp>
 	<string>
 	<structs.h>
@@ -457,7 +457,7 @@
 	<Button.h>
 	<Interface.h>
 
-1512098174 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\player.h
+1512442487 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\player.h
 	<Entity.h>
 	<Projectile.h>
 
@@ -470,7 +470,7 @@
 1510442106 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\tile.h
 	<Entity.h>
 
-1512243127 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\main.cpp
+1512442213 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\main.cpp
 	<Map.h>
 	<Functions.h>
 
@@ -488,10 +488,10 @@
 1511928711 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\projectile.cpp
 	"Projectile.h"
 
-1511929390 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\functions.h
-	"Projectile.h"
-	"Player.h"
-	"Monster.h"
+1512442896 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\functions.h
+	<Player.h>
+	<Projectile.h>
+	<Monster.h>
 
 1511928922 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\damage.cpp
 	"Damage.h"
@@ -516,7 +516,7 @@
 
 1512096877 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\button.h
 
-1512243471 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\interface.cpp
+1512441131 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\interface.cpp
 	"Interface.h"
 
 1512440794 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\interface.h

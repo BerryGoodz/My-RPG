@@ -4,7 +4,8 @@
 #include <Entity.h>
 #include <Projectile.h>
 using namespace sf;
-class Player: public Entity
+
+class Player
 {
     public:
         Player(const image& img, const setRect& sr, const position& p);
@@ -31,6 +32,7 @@ class Player: public Entity
         int dir = 0;
         int imgSizeX;
         int imgSizeY;
+
         int i = 0;
         int tick = 0;
         float speed = 7; // default speed: 0.7
@@ -38,6 +40,9 @@ class Player: public Entity
         float strength = 30;
         float critChance = 0.3;
         float critMultiplier = 2;
+
+
+
 
 };
 
