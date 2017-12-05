@@ -51,22 +51,32 @@
 		<Linker>
 			<Add directory="C:/Users/Youngjoon/Desktop/New Order/SFML-2.4.2/lib" />
 		</Linker>
+		<Unit filename="include/Button.h" />
+		<Unit filename="include/Damage.h" />
 		<Unit filename="include/Entity.h" />
 		<Unit filename="include/Functions.h" />
+		<Unit filename="include/Interface.h" />
 		<Unit filename="include/Levels.h" />
 		<Unit filename="include/Map.h" />
 		<Unit filename="include/Monster.h" />
 		<Unit filename="include/Player.h" />
 		<Unit filename="include/Projectile.h" />
 		<Unit filename="include/Tile.h" />
+		<Unit filename="include/Timer.h" />
+		<Unit filename="include/screenManager.h" />
 		<Unit filename="include/structs.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Button.cpp" />
+		<Unit filename="src/Damage.cpp" />
 		<Unit filename="src/Entity.cpp" />
+		<Unit filename="src/Interface.cpp" />
 		<Unit filename="src/Map.cpp" />
 		<Unit filename="src/Monster.cpp" />
 		<Unit filename="src/Player.cpp" />
 		<Unit filename="src/Projectile.cpp" />
 		<Unit filename="src/Tile.cpp" />
+		<Unit filename="src/Timer.cpp" />
+		<Unit filename="src/screenManager.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

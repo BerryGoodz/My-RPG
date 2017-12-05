@@ -10,7 +10,7 @@ Projectile::Projectile(const image& img, const setRect& sr, const position& p)
 
     s_projectile.setPosition(p.x1,p.y1);
 
-    rect.setSize(Vector2f(50,50));
+    rect.setSize(Vector2f(10,20));
     rect.setPosition(p.x1, p.y1);
 }
 
@@ -30,9 +30,13 @@ void Projectile::update(float x, float y, float angle, int d)
 }
 void Projectile::frameRun()
 {
-    rect.setPosition(s_projectile.getPosition().x, s_projectile.getPosition().y);
+    rect.setRotation(s_projectile.getRotation());
+    if(dir== 0)rect.setPosition(s_projectile.getPosition().x+10, s_projectile.getPosition().y);
+    if(dir== 1)rect.setPosition(s_projectile.getPosition().x, s_projectile.getPosition().y+10);
+    if(dir== 2)rect.setPosition(s_projectile.getPosition().x, s_projectile.getPosition().y-10);
+    if(dir== 3)rect.setPosition(s_projectile.getPosition().x-10, s_projectile.getPosition().y);
     lifeTime--;
-    if(dir==0){   s_projectile.move(0,speed);}
+    if(dir==0){s_projectile.move(0,speed);}
     if(dir==1){s_projectile.move(-speed,0);}
     if(dir==2){s_projectile.move(speed,0);}
     if(dir==3){s_projectile.move(0,-speed);}

@@ -56,7 +56,6 @@ void Player::frameRun()
 }
 void Player::attack(std::vector<Projectile>& p, Projectile& pp)
 {
-
     if(dir==0){   pp.update(s_player.getPosition().x+15, s_player.getPosition().y+35, 0, 0);}//down
     if(dir==1){   pp.update(s_player.getPosition().x+30, s_player.getPosition().y+20, 90, 1);}//left
     if(dir==2){   pp.update(s_player.getPosition().x+30, s_player.getPosition().y+55, 270, 2);}//right
@@ -85,4 +84,10 @@ void Player::wallCollide(int dir)
 void Player::locate(sf::Vector2f loc)
 {
     s_player.setPosition(loc);
+}
+int Player::getDamage(int skillPower)
+{
+    int damage;
+    damage = strength;
+    return damage;
 }

@@ -2,7 +2,7 @@
 #define MONSTER_H
 
 #include <Entity.h>
-
+using namespace sf;
 class Monster
 {
     public:
@@ -14,6 +14,8 @@ class Monster
         float getPositionX();
         float getPositionY();
         void wallCollide(int dir);
+        void takeDamage(int damage);
+        int  getHp();
         RectangleShape getRect();
     private:
         Sprite s_monster;
@@ -26,6 +28,7 @@ class Monster
         int tick = 0;
         int i = 0;
         sf::RectangleShape rect;
+        int hp = 10;
 };
 
 #endif // MONSTER_H

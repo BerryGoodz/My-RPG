@@ -3,6 +3,7 @@
 
 #include <Entity.h>
 #include <Projectile.h>
+using namespace sf;
 class Player: public Entity
 {
     public:
@@ -20,6 +21,7 @@ class Player: public Entity
         void locate(sf::Vector2f loc);
         void wallCollide(int dir);
         void attack(std::vector<Projectile>& p, Projectile& pp);
+        int getDamage(int skillPower);
 
 
     private:
@@ -31,8 +33,11 @@ class Player: public Entity
         int imgSizeY;
         int i = 0;
         int tick = 0;
-        float speed = 0.7;
+        float speed = 7; // default speed: 0.7
         int cooldown = 20;
+        float strength = 30;
+        float critChance = 0.3;
+        float critMultiplier = 2;
 
 };
 

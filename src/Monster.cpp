@@ -10,10 +10,11 @@ Monster::Monster(const image& img, const setRect& sr, const position& p)
 
     s_monster.setPosition(p.x1,p.y1);
 
+
     imgSizeX = sr.rectX;
     imgSizeY = sr.rectY;
 
-    rect.setSize(Vector2f(50,50));
+    rect.setSize(Vector2f(imgSizeX/2,imgSizeY/2));
 
 
 }
@@ -46,7 +47,8 @@ sf::RectangleShape Monster::getRect()
 void Monster::frameRun()
 {
     tick++;
-    rect.setPosition(s_monster.getPosition().x, s_monster.getPosition().y);
+
+    rect.setPosition(s_monster.getPosition().x+10, s_monster.getPosition().y+10);
     s_monster.setTextureRect(IntRect(0, randomN * imgSizeY, imgSizeX, imgSizeY));
     if(tick>30&&i>1){i = 0; tick = 0;}
     if(tick>30){i++; tick = 0;}
@@ -84,4 +86,12 @@ void Monster::wallCollide(int dir)
     if(dir == 2) s_monster.move(-speed,0);
     if(dir == 3) s_monster.move(0,speed);
     if(dir == 4) s_monster.move(0,-speed);
+}
+void Monster::takeDamage(int damage)
+{
+    hp -= damage;
+}
+int Monster::getHp()
+{
+    return hp;
 }

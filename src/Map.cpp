@@ -41,6 +41,8 @@ bool Map::load(const std::string& tileset, sf::Vector2u tileSize, const int* til
             {
                 m.setPosition(i * tileSize.x , j * tileSize.y);
                 ma.push_back(m);
+                mobN ++;
+                totalMobN ++;
             }
             if(tileNumber == 2)
             {
@@ -77,6 +79,8 @@ void Map::resetMap(std::vector<Monster>& ma)
     prevPortalX.clear();
     prevPortalY.clear();
     ma.clear();
+    mobN = 0;
+    totalMobN = 0;
 }
 bool Map::isEmpty()
 {
@@ -173,4 +177,35 @@ bool Map::onPrevPortal()
 {
     return prevMap;
 }
+void Map::monsterRespawn(Monster& m, std::vector<Monster>& ma)
+{
+    int chance = rand()%spawnRate;
 
+    if(mobN < totalMobN && chance == 1)
+    {
+        int x = rand()%1000;
+        int y = rand()%700;
+        int totalWallTests =  wallY.size();
+
+        for(int i = 0; i < wallX.size(); i ++)
+        {
+
+            if(x < wallX[i] - 20 || x > wallX[i] + 50 || y < wallY[i] - 20 || y > wallY[i] + 50)
+                {
+                    totalWallTests --;
+                }
+
+        }
+
+        if(totalWallTests == 0)
+        {
+            m.setPosition(x,y);
+            ma.push_back(m);
+            mobN ++;
+        }
+    }
+}
+void Map::monsterDied()
+{
+    mobN --;
+}

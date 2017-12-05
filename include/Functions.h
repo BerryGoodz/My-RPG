@@ -11,4 +11,5 @@ bool isCollide(Projectile p, Monster m)
     }
     return false;
 }
+
 #endif // FUNCTIONS_H

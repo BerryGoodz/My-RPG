@@ -18,7 +18,7 @@ class Projectile
         float speed = 2;
         sf::Sprite s_projectile;
         sf::Texture t_projectile;
-        int lifeTime = 50;
+        int lifeTime = 40;
         int dir = 0;
         sf::RectangleShape rect;
 };

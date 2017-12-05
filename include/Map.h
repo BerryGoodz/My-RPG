@@ -3,6 +3,15 @@
 #include <Player.h>
 #include <Entity.h>
 #include <Monster.h>
+#include <Levels.h>
+#include <Projectile.h>
+#include <Monster.h>
+#include <Damage.h>
+#include <Timer.h>
+#include <screenManager.h>
+#include <Button.h>
+#include <Interface.h>
+
 class Map: public sf::Drawable, public sf::Transformable
 {
     public:
@@ -16,6 +25,8 @@ class Map: public sf::Drawable, public sf::Transformable
         bool onPrevPortal();
         bool isEmpty();
         void monsterCollide(Monster& m);
+        void monsterRespawn(Monster& m, std::vector<Monster>& ma);
+        void monsterDied();
 
     private:
         sf::VertexArray m_vertices;
@@ -33,6 +44,9 @@ class Map: public sf::Drawable, public sf::Transformable
         int prevPortalNumber = 0;
         bool nextMap = false;
         bool prevMap = false;
+        int mobN = 0;
+        int totalMobN = 0;
+        int spawnRate = 100;// higher the number, less the monster spawns
 
 };
 

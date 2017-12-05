@@ -39,7 +39,21 @@ struct entityNames
     :name(s){}
     std::string name;
 };
-
-
+struct charSize
+{
+    explicit charSize(float n)
+    :s(n){}
+    float s;
+};
+struct rectSize
+{
+    explicit rectSize(float x1, float y1)
+    {
+        x = x1;
+        y = y1;
+    }
+    float x;
+    float y;
+};
 
 #endif // STRUCTS_H

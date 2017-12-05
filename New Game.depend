@@ -430,29 +430,38 @@
 	"Monster.h"
 	"Player.h"
 
-1511669092 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\entity.h
+1511928372 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\entity.h
 	<SFML/Graphics.hpp>
 	<string>
 	<structs.h>
 	<cstdlib>
 	<time.h>
 	<iostream>
+	<sstream>
 
-1510434718 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\structs.h
+1512088651 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\structs.h
 
-1511461377 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\map.cpp
+1511919434 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\map.cpp
 	"Map.h"
 
-1511461413 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\map.h
+1512097484 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\map.h
 	<Player.h>
 	<Entity.h>
 	<Monster.h>
+	<Levels.h>
+	<Projectile.h>
+	<Monster.h>
+	<Damage.h>
+	<Timer.h>
+	<screenManager.h>
+	<Button.h>
+	<Interface.h>
 
-1511668362 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\player.h
+1512098174 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\player.h
 	<Entity.h>
 	<Projectile.h>
 
-1511668389 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\player.cpp
+1511832240 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\player.cpp
 	"Player.h"
 
 1510442106 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\tile.cpp
@@ -461,29 +470,55 @@
 1510442106 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\tile.h
 	<Entity.h>
 
-1511713278 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\main.cpp
-	<Player.h>
+1512243127 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\main.cpp
 	<Map.h>
-	<Levels.h>
-	<Projectile.h>
 	<Functions.h>
 
 1511460730 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\levels.h
 
-1511729399 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\monster.cpp
+1511832376 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\monster.cpp
 	"Monster.h"
 
-1511669688 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\monster.h
+1511832376 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\monster.h
 	<Entity.h>
 
-1511669033 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\projectile.h
+1511832890 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\projectile.h
 	<Entity.h>
 
-1511669713 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\projectile.cpp
+1511928711 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\projectile.cpp
 	"Projectile.h"
 
-1511669144 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\functions.h
+1511929390 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\functions.h
 	"Projectile.h"
 	"Player.h"
 	"Monster.h"
+
+1511928922 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\damage.cpp
+	"Damage.h"
+
+1511928900 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\damage.h
+	<Entity.h>
+
+1511929628 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\timer.h
+	<Entity.h>
+
+1511929606 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\timer.cpp
+	"Timer.h"
+
+1512096671 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\screenmanager.cpp
+	"screenManager.h"
+
+1512096642 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\screenmanager.h
+	<Entity.h>
+
+1512096878 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\button.cpp
+	"Button.h"
+
+1512096877 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\button.h
+
+1512243471 source:c:\users\youngjoon\desktop\codeblocks\pokerpg\src\interface.cpp
+	"Interface.h"
+
+1512440794 c:\users\youngjoon\desktop\codeblocks\pokerpg\include\interface.h
+	<Entity.h>
 
