@@ -12,6 +12,8 @@ Player::Player(const image& img, const setRect& sr, const position& p)
 
     imgSizeX = sr.rectX;
     imgSizeY = sr.rectY;
+
+    rect.setSize(Vector2f(imgSizeX/4, imgSizeY/4));
 }
 
 Player::~Player()
@@ -22,7 +24,7 @@ Player::~Player()
 void Player::frameRun()
 {
     tick++;
-
+    rect.setPosition(getPositionX() + imgSizeX/3, getPositionY() + imgSizeY/2);
     s_player.setTextureRect(IntRect(0, dir * imgSizeY, imgSizeX, imgSizeY));
     if(tick>30&&i>2){i = 0; tick = 0;}
     if(tick>30){i++; tick = 0;}
@@ -53,6 +55,18 @@ void Player::frameRun()
         s_player.setTextureRect(IntRect(i * imgSizeX, dir * imgSizeY, imgSizeX, imgSizeY));
     }
     cooldown --;
+
+    if(experience >= maxExp)//Level up
+    {
+        experience = 0;
+        maxExp += lvl * 3;
+        lvl += 1;
+        maxHp += lvl;
+        maxMp += 1;
+        hp = maxHp;
+        mp = maxMp;
+        statPoint += 4;
+    }
 }
 void Player::attack(std::vector<Projectile>& p, Projectile& pp)
 {
@@ -88,6 +102,43 @@ void Player::locate(sf::Vector2f loc)
 int Player::getDamage(int skillPower)
 {
     int damage;
-    damage = strength;
+    damage = rand() % (lvl * 2) + strength;
+    if(rand() % 100 < critChance) damage *= critMultiplier;
     return damage;
+}
+int Player::getStat(std::string s)
+{
+    if(s == "str") return strength;
+    if(s == "hp") return hp;
+    if(s == "maxHp") return maxHp;
+    if(s == "mp") return mp;
+    if(s == "maxMp") return maxMp;
+    if(s == "exp") return experience;
+    if(s == "maxExp") return maxExp;
+    if(s == "level") return lvl;
+    if(s == "dex") return dex;
+    if(s == "int") return intel;
+    if(s == "luk") return luk;
+    if(s == "def") return def;
+    if(s == "statpoint") return statPoint;
+}
+void Player::addValue(std::string s, float e)
+{
+    if(s == "str") strength += e;
+    if(s == "hp") hp += e;
+    if(s == "maxHp") maxHp += e;
+    if(s == "mp") mp += e;
+    if(s == "maxMp") maxMp += e;
+    if(s == "exp") experience += e;
+    if(s == "maxExp") maxExp += e;
+    if(s == "level") lvl += e;
+    if(s == "dex") dex += e;
+    if(s == "int") intel += e;
+    if(s == "luk") luk += e;
+    if(s == "def") def += e;
+    if(s == "statpoint") statPoint += e;
+}
+RectangleShape Player::getRect()
+{
+    return rect;
 }

@@ -6,7 +6,7 @@ using namespace sf;
 class Monster
 {
     public:
-        Monster(const image& img, const setRect& sr, const position& p);
+        Monster(const image& img, const setRect& sr, const position& p, const health& he, const eva& av, const ID& monsterID);
         virtual ~Monster();
         virtual Sprite getSprite();
         void setPosition(float x, float y);
@@ -15,7 +15,8 @@ class Monster
         float getPositionY();
         void wallCollide(int dir);
         void takeDamage(int damage);
-        int  getHp();
+        int getHp();
+        int getID();
         RectangleShape getRect();
     private:
         Sprite s_monster;
@@ -28,7 +29,9 @@ class Monster
         int tick = 0;
         int i = 0;
         sf::RectangleShape rect;
-        int hp = 10;
+        int hp;
+        int avoid;
+        int m_ID;
 };
 
 #endif // MONSTER_H

@@ -1,6 +1,7 @@
 #include <Map.h>
 #include <Functions.h>
 
+
 const int W = 1000;
 const int H = 700;
 
@@ -17,25 +18,33 @@ int main()
 
     Player player(image("pokemontrainer.png"), setRect(0,0,256/4, 256/4), position(W/2,H/2));
     player.locate(sf::Vector2f(540,240));// initial position (position is not set in the first map by the load function)
-    Monster m(image("slime.png"), setRect(0, 0, 50, 50), position(50,50));
+    Monster m(image("slime.png"), setRect(0, 0, 50, 50), position(50,50), health(10), eva(1), ID(1));
+    Monster ys(image("yellowslime.png"), setRect(0, 0, 50, 50), position(50,50), health(15), eva(2), ID(2));
 
-    std::vector<Monster> monsterArray;
+    std::vector<Monster> monsterArray, monsterStorage;
+    monsterStorage.push_back(m);
+    monsterStorage.push_back(ys);
     Projectile sword(image("sword.png"), setRect(0, 0, 32, 32), position(0, 0));
     std::vector<Projectile> projectileArray;
+    std::vector<Item> itemArray;
+    Item item;
     Map map, bgmap;
 
-    if (!map.load("tile2.png", sf::Vector2u(50, 50), level1, 20, 14, player, m, monsterArray))
+    if (!map.load("tile2.png", sf::Vector2u(50, 50), level1, 20, 14, player, monsterStorage, monsterArray))
         return -1;
-    if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel1, 20, 14, player, m, monsterArray))
+    if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel1, 20, 14, player, monsterStorage, monsterArray))
         return -1;
     Damage damage("word.ttf", charSize(30));
     std::vector<Damage> damageArray;
     Timer timer; // used for button delays
-    std::vector<RectangleShape> rectArray;
-    screenManager screen(rectSize(250,200), rectArray);
-    RectangleShape statButton(Vector2f(30,30));
-    statButton.setPosition(900,100);
+
+    screenManager screen(rectSize(250,200));
     Interface interface;
+
+
+    item.drop(position(0,0),1);
+    for(int i = 0; i <2; i++)screen.addItem(item);
+
 
     //////////Initialization(end)//////////
 
@@ -49,16 +58,21 @@ int main()
 
 
     //////////Frameruns(begin)//////////
-
+        Vector2i localPosition = sf::Mouse::getPosition(window);
+        interface.frameRun(player);
+        screen.frameRun(player, localPosition);
+        map.monsterRespawn(monsterStorage, monsterArray, bgmap);
         timer.frameRun();
-
         player.frameRun();
+
         for (auto it = monsterArray.begin(); it < monsterArray.end(); it++) {
             it->frameRun();
-            if(it -> getHp() < 0){
+            if(it -> getHp() <= 0){
+                item.drop(position(it -> getPositionX(), it -> getPositionY()), it -> getID());
+                itemArray.push_back(item);
                 monsterArray.erase(it);
                 map.monsterDied();
-                interface.addExperience(1);
+                player.addValue("exp", 1);
             }
         }
 
@@ -74,8 +88,6 @@ int main()
                 damageArray.erase(it);
             }
         }
-        interface.frameRun();
-        map.monsterRespawn(m , monsterArray);
 
         //////////Frameruns(end)//////////
 
@@ -92,6 +104,79 @@ int main()
             }
         }
 
+        if(event.type == Event::MouseButtonReleased) {
+            screen.dragItem(0);
+        }
+        if(screen.isMouseOnButton("itemslot", localPosition)) {
+            if(event.type == Event::MouseButtonPressed) {
+                if(timer.getTime() < 0) {
+                    screen.dragItem(1);
+                    timer.setTimer(60);
+                }
+            }
+
+        }
+        if(screen.isMouseOnButton("statbutton", localPosition)) {
+            if(Mouse::isButtonPressed(Mouse::Left)) {
+                if(timer.getTime() < 0) {
+                    screen.screenOn("stat");
+                    timer.setTimer(60);
+                }
+            }
+        }
+        if(screen.isMouseOnButton("inventorybutton", localPosition)) {
+            if(Mouse::isButtonPressed(Mouse::Left)) {
+                if(timer.getTime() < 0) {
+                    screen.screenOn("inventory");
+                    timer.setTimer(60);
+                }
+            }
+        }
+        if(screen.isMouseOnButton("str", localPosition)) {
+            if(Mouse::isButtonPressed(Mouse::Left) && player.getStat("statpoint") > 0 && screen.isScreenOn("stat")) {
+                if(timer.getTime() < 0) {
+                    player.addValue("str", 1);
+                    player.addValue("statpoint", -1);
+                    timer.setTimer(30);
+                }
+            }
+        }
+        if(screen.isMouseOnButton("dex", localPosition)) {
+            if(Mouse::isButtonPressed(Mouse::Left) && player.getStat("statpoint") > 0 && screen.isScreenOn("stat")) {
+                if(timer.getTime() < 0) {
+                    player.addValue("dex", 1);
+                    player.addValue("statpoint", -1);
+                    timer.setTimer(30);
+                }
+            }
+        }
+        if(screen.isMouseOnButton("int", localPosition)) {
+            if(Mouse::isButtonPressed(Mouse::Left) && player.getStat("statpoint") > 0 && screen.isScreenOn("stat")) {
+                if(timer.getTime() < 0) {
+                    player.addValue("int", 1);
+                    player.addValue("statpoint", -1);
+                    timer.setTimer(30);
+                }
+            }
+        }
+        if(screen.isMouseOnButton("luk", localPosition)) {
+            if(Mouse::isButtonPressed(Mouse::Left) && player.getStat("statpoint") > 0 && screen.isScreenOn("stat")) {
+                if(timer.getTime() < 0) {
+                    player.addValue("luk", 1);
+                    player.addValue("statpoint", -1);
+                    timer.setTimer(30);
+                }
+            }
+        }
+        if(screen.isMouseOnButton("def", localPosition)) {
+            if(Mouse::isButtonPressed(Mouse::Left) && player.getStat("statpoint") > 0 && screen.isScreenOn("stat")) {
+                if(timer.getTime() < 0) {
+                    player.addValue("def", 1);
+                    player.addValue("statpoint", -1);
+                    timer.setTimer(30);
+                }
+            }
+        }
         //////////Buttons(end)//////////
 
         //////////Collision(begin)//////////
@@ -105,14 +190,24 @@ int main()
 
         for (auto it = monsterArray.begin(); it < monsterArray.end(); it++) {
             for (auto it2 = projectileArray.begin(); it2 < projectileArray.end(); it2++) {
-                if (isCollide(*it2, *it)) {
-                    it->takeDamage(player.getDamage(1));
-                    damage.update(player.getDamage(1), position(it -> getPositionX(), it -> getPositionY()));
+                if (isCollide<Projectile, Monster>(*it2, *it)) {
+                    int tempDamage = player.getDamage(1);
+                    it->takeDamage(tempDamage);
+                    damage.update(tempDamage, position(it -> getPositionX(), it -> getPositionY()));
                     damageArray.push_back(damage);
                     projectileArray.erase(it2);
                 }
             }
         }
+
+    if(screen.isNotTooMuchItem()) {
+        for (auto it = itemArray.begin(); it < itemArray.end(); it++) {
+            if (isCollide<Player, Item>(player, *it)) {
+                screen.addItem(*it);
+                itemArray.erase(it);
+            }
+        }
+    }
 
         //////////Collision(end)//////////
 
@@ -123,18 +218,18 @@ int main()
             map.resetMap(monsterArray);
             if(map.isEmpty())
             {
-            if (!map.load("tile2.png", sf::Vector2u(50, 50), level2, 20, 14, player, m, monsterArray))
+            if (!map.load("tile2.png", sf::Vector2u(50, 50), level2, 20, 14, player, monsterStorage, monsterArray))
             return -1;
-            if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel2, 20, 14, player, m, monsterArray))
+            if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel2, 20, 14, player, monsterStorage, monsterArray))
             return -1;
             }
         }
         if (map.onPrevPortal()) {
             map.resetMap(monsterArray);
             if (map.isEmpty()) {
-                if (!map.load("tile2.png", sf::Vector2u(50, 50), level1, 20, 14, player, m, monsterArray))
+                if (!map.load("tile2.png", sf::Vector2u(50, 50), level1, 20, 14, player, monsterStorage, monsterArray))
                     return -1;
-                if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel1, 20, 14, player, m, monsterArray))
+                if (!bgmap.load("flowers.png", sf::Vector2u(50, 50), Bglevel1, 20, 14, player, monsterStorage, monsterArray))
                     return -1;
             }
         }
@@ -146,6 +241,10 @@ int main()
         window.draw(map);
         window.draw(bgmap);
 
+        for (auto it = itemArray.begin(); it < itemArray.end(); it++) {
+            window.draw(it->getSprite());
+            //window.draw(it->getRect());
+        }
 
         for (auto it = monsterArray.begin(); it < monsterArray.end(); it++) {
             window.draw(it->getSprite());
@@ -153,6 +252,7 @@ int main()
         }
 
         window.draw(player.getSprite());
+        //window.draw(player.getRect());
 
         for (auto it = projectileArray.begin(); it < projectileArray.end(); it++) {
             window.draw(it->getSprite());
@@ -163,10 +263,7 @@ int main()
             window.draw(it->getText());
         }
 
-        for (auto it = rectArray.begin(); it < rectArray.end(); it++) {
-            window.draw(*it);
-        }
-        window.draw(statButton);
+        window.draw(screen);
         window.draw(interface);
         window.display();
     }

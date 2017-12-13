@@ -10,7 +10,7 @@ Map::~Map()
     //dtor
 }
 
-bool Map::load(const std::string& tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height, Player& player, Monster& m, std::vector<Monster>& ma)
+bool Map::load(const std::string& tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height, Player& player, std::vector<Monster>& ms, std::vector<Monster>& ma)
 {
     if(!m_tileset.loadFromFile(tileset))
         return false;
@@ -39,10 +39,19 @@ bool Map::load(const std::string& tileset, sf::Vector2u tileSize, const int* til
             quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
             if(tileNumber == -1)
             {
-                m.setPosition(i * tileSize.x , j * tileSize.y);
-                ma.push_back(m);
+                ms[0].setPosition(i * tileSize.x , j * tileSize.y);
+                ma.push_back(ms[0]);
                 mobN ++;
                 totalMobN ++;
+                spawnSystem.push_back(0);
+            }
+            if(tileNumber == -2)
+            {
+                ms[1].setPosition(i * tileSize.x , j * tileSize.y);
+                ma.push_back(ms[1]);
+                mobN ++;
+                totalMobN ++;
+                spawnSystem.push_back(1);
             }
             if(tileNumber == 2)
             {
@@ -79,6 +88,7 @@ void Map::resetMap(std::vector<Monster>& ma)
     prevPortalX.clear();
     prevPortalY.clear();
     ma.clear();
+    spawnSystem.clear();
     mobN = 0;
     totalMobN = 0;
 }
@@ -99,7 +109,6 @@ float distToRight;
 float distToTop;
 float distToBottom;
 
-
     if(n.name == "wall")
     {
     for(int i = 0; i < wallX.size(); i ++)
@@ -110,7 +119,6 @@ float distToBottom;
     distToBottom = (wallY[i]+ 60) - (p.getPositionY()+48);
     if ( distToLeft > 0 && distToRight > 0 && distToTop > 0 && distToBottom > 0 )
     {
-
         if(distToLeft > distToRight && distToLeft > distToTop && distToLeft > distToBottom){p.wallCollide(1);}//get rid of these long if statements, define them somewhere else
         else if(distToRight > distToLeft && distToRight > distToTop && distToRight > distToBottom){p.wallCollide(2);}
         else if(distToTop > distToLeft && distToTop > distToRight && distToTop > distToBottom){p.wallCollide(3);}
@@ -177,30 +185,32 @@ bool Map::onPrevPortal()
 {
     return prevMap;
 }
-void Map::monsterRespawn(Monster& m, std::vector<Monster>& ma)
+void Map::monsterRespawn(std::vector<Monster>& ms, std::vector<Monster>& ma, Map& m)
 {
     int chance = rand()%spawnRate;
 
     if(mobN < totalMobN && chance == 1)
     {
         int x = rand()%1000;
-        int y = rand()%700;
+        int y = rand()%700 - 2;
         int totalWallTests =  wallY.size();
 
         for(int i = 0; i < wallX.size(); i ++)
         {
-
-            if(x < wallX[i] - 20 || x > wallX[i] + 50 || y < wallY[i] - 20 || y > wallY[i] + 50)
+            if(x < wallX[i] - 20 || x > wallX[i] + 50 || y < wallY[i] - 45 || y > wallY[i] + 60)
                 {
                     totalWallTests --;
                 }
-
         }
 
         if(totalWallTests == 0)
         {
-            m.setPosition(x,y);
-            ma.push_back(m);
+            spawnSystem = m.getSpawnSystem();
+            m.getSpawnSystem() = std::vector<int>();
+            int r = rand() % spawnSystem.size();
+            int monsterID = spawnSystem[r];
+            ms[monsterID].setPosition(x,y);
+            ma.push_back(ms[monsterID]);
             mobN ++;
         }
     }
@@ -208,4 +218,8 @@ void Map::monsterRespawn(Monster& m, std::vector<Monster>& ma)
 void Map::monsterDied()
 {
     mobN --;
+}
+std::vector<int> Map::getSpawnSystem()
+{
+    return spawnSystem;
 }

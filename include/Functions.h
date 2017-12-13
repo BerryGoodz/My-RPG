@@ -4,8 +4,8 @@
 #include <Player.h>
 #include <Projectile.h>
 #include <Monster.h>
-
-bool isCollide(Projectile p, Monster m)
+template <class A, class B>
+bool isCollide(A p, B m)
 {
     if(p.getRect().getGlobalBounds().intersects(m.getRect().getGlobalBounds()))
     {
@@ -13,5 +13,6 @@ bool isCollide(Projectile p, Monster m)
     }
     return false;
 }
+
 
 #endif //FUNCTIONS_H

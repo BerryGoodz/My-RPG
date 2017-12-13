@@ -1,6 +1,6 @@
 #include "Monster.h"
 
-Monster::Monster(const image& img, const setRect& sr, const position& p)
+Monster::Monster(const image& img, const setRect& sr, const position& p, const health& he, const eva& av, const ID& monsterID)
 {
     t_monster.loadFromFile(img.imgName);
 
@@ -15,6 +15,10 @@ Monster::Monster(const image& img, const setRect& sr, const position& p)
     imgSizeY = sr.rectY;
 
     rect.setSize(Vector2f(imgSizeX/2,imgSizeY/2));
+
+    hp = he.h;
+    avoid = av.a;
+    m_ID = monsterID.n;
 }
 
 Monster::~Monster()
@@ -92,4 +96,8 @@ void Monster::takeDamage(int damage)
 int Monster::getHp()
 {
     return hp;
+}
+int Monster::getID()
+{
+    return m_ID;
 }

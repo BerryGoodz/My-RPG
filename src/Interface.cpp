@@ -38,6 +38,7 @@ Interface::Interface()
     lvlShow.setFont(font);
     lvlShow.setFillColor(Color::Black);
     lvlShow.setPosition(80,5);
+
 }
 
 Interface::~Interface()
@@ -55,8 +56,16 @@ void Interface::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(lvl, states);
     target.draw(lvlShow, states);
 }
-void Interface::frameRun()
+void Interface::frameRun(Player& p)
 {
+    hp =  p.getStat("hp");
+    maxHp =  p.getStat("maxHp");
+    mp =  p.getStat("mp");
+    maxMp =  p.getStat("maxMp");
+    experience =  p.getStat("exp");
+    maxExp =  p.getStat("maxExp");
+    lvlValue = p.getStat("level");
+
     spr_expBar.setScale(static_cast<float>(experience) / maxExp, 1);
     spr_hpBar.setScale(static_cast<float>(hp) / maxHp, 1);
     spr_mpBar.setScale(static_cast<float>(mp) / maxMp, 1);
@@ -68,18 +77,5 @@ void Interface::frameRun()
     ssp >> sp;
     lvlShow.setString(sp);
 
-    if(experience >= maxExp)
-    {
-        experience = 0;
-        maxExp += lvlValue * 3;
-        lvlValue += 1;
-        maxHp += lvlValue;
-        maxMp += 1;
-        hp = maxHp;
-        mp = maxMp;
-    }
 }
-void Interface::addExperience(float e)
-{
-    experience += e;
-}
+

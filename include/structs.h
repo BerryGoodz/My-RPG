@@ -55,5 +55,22 @@ struct rectSize
     float x;
     float y;
 };
-
+struct health
+{
+    explicit health(int n)
+    :h(n){}
+    int h;
+};
+struct eva
+{
+    explicit eva(int n)
+    :a(n){}
+    int a;
+};
+struct ID
+{
+    explicit ID(int a)
+    :n(a){}
+    int n;
+};
 #endif // STRUCTS_H

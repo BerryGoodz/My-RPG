@@ -11,13 +11,14 @@
 #include <screenManager.h>
 #include <Button.h>
 #include <Interface.h>
+#include <Item.h>
 
 class Map: public sf::Drawable, public sf::Transformable
 {
     public:
         Map();
         virtual ~Map();
-        bool load(const std::string& tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height, Player& player, Monster& m, std::vector<Monster>& ma);
+        bool load(const std::string& tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height, Player& player, std::vector<Monster>& ms, std::vector<Monster>& ma);
         void resetMap(std::vector<Monster>& ma);
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
         void isCollide(Player& p, const entityNames& n);
@@ -25,8 +26,9 @@ class Map: public sf::Drawable, public sf::Transformable
         bool onPrevPortal();
         bool isEmpty();
         void monsterCollide(Monster& m);
-        void monsterRespawn(Monster& m, std::vector<Monster>& ma);
+        void monsterRespawn(std::vector<Monster>& ms, std::vector<Monster>& ma, Map& m);
         void monsterDied();
+        std::vector<int> getSpawnSystem();
 
     private:
         sf::VertexArray m_vertices;
@@ -47,6 +49,7 @@ class Map: public sf::Drawable, public sf::Transformable
         int mobN = 0;
         int totalMobN = 0;
         int spawnRate = 100;// higher the number, less the monster spawns
+        std::vector<int> spawnSystem;
 
 };
 

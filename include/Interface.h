@@ -2,6 +2,7 @@
 #define INTERFACE_H
 
 #include <Entity.h>
+#include <Player.h>
 using namespace sf;
 
 class Interface: public sf::Drawable
@@ -10,27 +11,19 @@ class Interface: public sf::Drawable
         Interface();
         virtual ~Interface();
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-        void frameRun();
-        void addExperience(float e);
+        void frameRun(Player& p);
 
     private:
         Sprite spr_expBar, spr_hpBar, spr_mpBar;
 
         RectangleShape expRect, hpRect, mpRect;
         Texture t, t2, t3;
-        float experience = 5;
-        float maxExp = 10;
-
-        float hp = 5;
-        float maxHp = 10;
-
-        float mp = 5;
-        float maxMp = 10;
+        float experience, maxExp, hp, maxHp, mp, maxMp;
 
         Font font;
         Text lvl;
         Text lvlShow;
-        int lvlValue = 1;
+        int lvlValue;
 
 };
 
